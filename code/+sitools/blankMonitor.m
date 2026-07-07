@@ -18,8 +18,8 @@ classdef blankMonitor < handle
     properties
         monitor_port = 1
         monitor_line = 6
-        on_duration = 5; % in microseconds.
-        offset = 5 % -1; % in microseconds.
+        on_duration = 10; % in microseconds.
+        offset = -1 % -1; % in microseconds.
         scannerFrequency
         is_bidirectional
         mon_waveform
@@ -60,7 +60,7 @@ classdef blankMonitor < handle
             offset_samples = round(obj.offset * 1e-6 * obj.hTask.sampleRate);
 
             if obj.is_bidirectional
-                fprintf('Bidirectional scanning now.\n')
+                fprintf('[blankMonitor] Bidirectional scanning now.\n')
                 off_timings = round((fullscan_timings - 2*on_timings) /2);
                 % [offset] | [on] | [off] | [on] | [rest] | [0]
                 trailing  = offset_samples;
@@ -78,7 +78,7 @@ classdef blankMonitor < handle
 
 
             else % unidirectional
-                fprintf('Unidirectional scanning now.\n')
+                fprintf('[blankMonitor] Unidirectional scanning now.\n')
                 off_timings_uni = fullscan_timings - on_timings;
                 leading = off_timings_uni - offset_samples;
                 trailing  = offset_samples;
@@ -90,10 +90,11 @@ classdef blankMonitor < handle
                     zeros(1,1)];
 
                 duty_cycle = 100 * on_timings / fullscan_timings;
+                off_timings = off_timings_uni;
 
             end
 
-            fprintf('on_duration: %d us, offset: %d us, off_timings: %d, duty_cycle: %.1f%%\n', obj.on_duration, obj.offset, off_timings, duty_cycle);
+            fprintf('[blankMonitor] on_duration: %d us, offset: %d us, off_timings: %d, duty_cycle: %.1f%%\n', obj.on_duration, obj.offset, off_timings, duty_cycle);
             obj.hTask.writeOutputBuffer(obj.mon_waveform);
             obj.hTask.samplesPerTrigger = size(obj.mon_waveform, 1);
         end
@@ -104,18 +105,28 @@ classdef blankMonitor < handle
                 obj.on_duration = value;
                 obj.make_waveform()
             else
-                fprintf('Waveform timings must be a positive number (in usec).\n')
+                fprintf('[blankMonitor] Waveform timings must be a positive number (in usec).\n')
             end
         end
             
+        function set.offset(obj, value)
+            % update waveform and restart task
+            if isnumeric(value) && isscalar(value) && isreal(value)
+                obj.offset = value;
+                obj.make_waveform()
+            else
+                fprintf('[blankMonitor] Offset must be a real numeric scalar (in usec).\n')
+            end
+        end
+
         function start(obj, msg)
             try
                 obj.hTask.start();
                 if msg
-                    fprintf('Monitor blanker has started\n')
+                    fprintf('[blankMonitor] Monitor blanker has started\n')
                 end
             catch ME
-                error('Failed to start task')
+                error('[blankMonitor] Failed to start task\n')
             end
         end
         
@@ -128,7 +139,7 @@ classdef blankMonitor < handle
         end
         
         function delete(obj)
-            fprintf('Monitor blanker is shutting down...')
+            fprintf('[blankMonitor] Monitor blanker is shutting down...')
             obj.start(false) % to ensure zero signals to the monitor (healthy for the monitor)
             obj.stop()
             obj.hTask.delete();
