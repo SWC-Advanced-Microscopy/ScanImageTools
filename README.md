@@ -4,8 +4,8 @@ Useful ScanImage-related MATLAB tools.
 ### Contents
 * `sitools.blankMonitor`/`sitools.monitor_blanker`  - Blank monitors and enable them only during fast axis turn-around periods.
 * `sitools.blankPhotostim` - Blank photostimulation TTL and enable them only during fast axis turn-around periods. **Because this makes it difficult to control stim frequency and duty cycle, we don't use for 2p optogenetics at 2p-313.** Instead, we use 1D-interpolation approach [stiminterp](https://github.com/SainsburyWellcomeCentre/stiminterp/tree/main).
-*  `sitools.publishFrame.m` - Publish acquired frames via ZeroMQ. 
 * `sitools.ai_recorder` - Acquire AI data during acquisition. Can start/stop in sync with ScanImage image acquisition. Automatically saves AI waveforms when images are saved during a Grab acquisition in ScanImage. 
+* `sitools.si_overlay.TargetOverlay` - Draw target markers (`*`, `x` or `+`) on top of the ScanImage channel and merge windows, e.g. to show photostim targets. See [its README](code/+sitools/+si_overlay/README.md). `startUpOverlay`/`shutDownOverlay` user functions create/delete it as `hOverlay` in the base workspace.
 * UserFunctionInjector - apply user functions at the command line using the class `scanImageTool_base`. An example is provided.   
 * `appendDateAndTimeToFname` - User function that adds the current date and time to the start of the file name. Updates when Grab or loop is pressed.
 * `useful/CamAcqWithFrameTimes.m` - Short code snippet containing a class that records images from a camera and in the frame headers stamps the current frame from the 2p rig. 
@@ -21,5 +21,5 @@ If you want to install MFH Mods for ScanImage, you need to replace the original 
 
 ### Electronic circuits
 Some of the tools also require custom electronics.
-* `sitools.blankMonitor` - You need to customize the circuit within monitors. We use Lenovo E22-28 (discontinued as of March 2025).
+* `sitools.blankMonitor` - You need to customize the circuit within monitors. We use Lenovo E22-28 (discontinued as of March 2025). Check [this repo](https://github.com/SainsburyWellcomeCentre/fablabs-monitor-blanking) for the details.
 * `sitools.blankPhotostim` - You need analog switch ADG819 to gate signals. You can gate both TTL pulses (for LED) and AO (for laser AOM e.g. Satsuma HP).
