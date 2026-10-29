@@ -18,8 +18,8 @@ classdef blankMonitor < handle
     properties
         monitor_port = 1
         monitor_line = 6
-        on_duration = 10; % in microseconds.
-        offset = -1 % -1; % in microseconds.
+        on_duration = 10; % in microseconds. 10 # 15
+        offset = -1 % -1; % in microseconds. -1 # -1
         scannerFrequency
         is_bidirectional
         mon_waveform
@@ -73,6 +73,14 @@ classdef blankMonitor < handle
                     ones(on_timings, 1);
                     zeros(trailing, 1);
                     zeros(1,1)];
+
+                % obj.mon_waveform = [ ...
+                %     ones(leading, 1); 
+                %     zeros(on_timings, 1);
+                %     ones(off_timings, 1); 
+                %     zeros(on_timings, 1);
+                %     ones(trailing, 1);
+                %     zeros(1,1)];
 
                 duty_cycle = 100 * 2 * on_timings / fullscan_timings;
 
