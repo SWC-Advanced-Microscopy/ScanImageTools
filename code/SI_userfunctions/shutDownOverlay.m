@@ -1,4 +1,4 @@
-function shutDownOverlay(src, evt, vargin)
+function shutDownOverlay(src,~,varargin)
     if evalin('base','exist("hOverlay","var")')
 
         evalin('base','delete(hOverlay);');   % remove markers + listener
