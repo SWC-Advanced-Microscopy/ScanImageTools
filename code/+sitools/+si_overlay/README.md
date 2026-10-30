@@ -1,6 +1,6 @@
 # si_overlay
 
-Draws target markers (`*`, `x` or `+`) on top of the ScanImage channel windows and the merge window.
+Draws target markers (`*`, `x`, `+` or `o`) on top of the ScanImage channel windows and the merge window.
 No ScanImage files are changed. It attaches to the running `hSI` from the base workspace.
 
 Supports one FOV and one plane for now.
@@ -18,7 +18,7 @@ hOverlay.setTargetsPixels([100 100; 256 256])   % targets in imaging pixels (1-b
 hOverlay.setTargets(xyRef)                      % or in ScanImage reference space
 hOverlay.clear                                  % remove the points, keep the overlay
 
-hOverlay.marker = 'x';                          % '*', 'x' or '+'
+hOverlay.marker = 'x';                          % '*', 'x', '+' or 'o'
 hOverlay.color = [1 0 0];
 hOverlay.markerSize = 15;
 hOverlay.hide; hOverlay.show;

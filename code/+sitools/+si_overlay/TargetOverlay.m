@@ -22,7 +22,7 @@ classdef TargetOverlay < handle
     % delete(hOverlay) % removes the markers and the listener
 
     properties
-        marker char = '*'         % '*', 'x' or '+'
+        marker char = '*'         % '*', 'x', '+' or 'o'
         markerSize = 12           % [points]
         color = [0 1 0]           % RGB
         lineWidth = 1.5
@@ -41,7 +41,7 @@ classdef TargetOverlay < handle
 
     properties (Constant, Hidden)
         TAG = 'si_overlay_TargetOverlay'
-        ALLOWED_MARKERS = {'*', 'x', '+'}
+        ALLOWED_MARKERS = {'*', 'x', '+', 'o'}
     end
 
     methods
